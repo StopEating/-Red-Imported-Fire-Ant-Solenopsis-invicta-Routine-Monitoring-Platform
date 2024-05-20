@@ -1,30 +1,46 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <router-view v-if="isRouterActive"></router-view>
 </template>
+<script lang="ts" setup>
+import { ref, provide, nextTick, watch } from 'vue'
+import router from './router';
+const isRouterActive = ref(true)
+const reload= () => {
+isRouterActive.value = false
 
-<style>
+nextTick(() => {
+  location.reload()
+  isRouterActive.value = true
+})
+}
+provide('reload',reload)
+
+</script>
+
+
+<style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+font-family: Avenir, Helvetica, Arial, sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+color: #2c3e50;
+height:100vh;
 
+}
+*{
+padding:0;
+margin:0;
+}
 nav {
-  padding: 30px;
-}
+padding: 30px;
 
-nav a {
+a {
   font-weight: bold;
   color: #2c3e50;
-}
 
-nav a.router-link-exact-active {
-  color: #42b983;
+  &.router-link-exact-active {
+    color: #42b983;
+  }
+}
 }
 </style>
